@@ -9,16 +9,22 @@ CHAT_ID = '275651242'
 
 def send_telegram_message(text):
     url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage'
-    payload = {'chat_id': CHAT_ID, 'text': text}
-    requests.post(url, data=payload)
+    data = {'chat_id': CHAT_ID, 'text': text}
+    requests.post(url, data=data)
 
 
 @app.route('/alert', methods=['POST'])
 def alert():
-    data = request.json
-    message = data.get('message', '🚨 Сработал алерт на TradingView!')
-    send_telegram_message(message)
-    return 'OK'
+    try:
+        if request.is_json:
+            data = request.get_json()
+            message = data.get('message', '🚨 (пустое сообщение)')
+        else:
+            message = request.data.decode('utf-8') or '🚨 (не JSON запрос)'
+        send_telegram_message(message)
+        return 'OK'
+    except Exception as e:
+        return f'Ошибка: {str(e)}', 500
 
 
 @app.route('/')
