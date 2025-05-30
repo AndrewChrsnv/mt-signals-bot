@@ -15,6 +15,9 @@ def send_telegram_message(text):
 
 @app.route('/alert', methods=['POST'])
 def alert():
+    token = request.args.get('token')
+    if token != SECRET:
+        return '❌ Доступ запрещён', 403
     try:
         if request.is_json:
             data = request.get_json()
