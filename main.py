@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 TELEGRAM_TOKEN = '7692126891:AAHn7XXYsfoXFD_naFFKq7ROsCD28fkDkys'
 CHAT_ID = '275651242'
-
+SECRET = 'super_secret_123'
 
 def send_telegram_message(text):
     url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage'
